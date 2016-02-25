@@ -45,7 +45,7 @@ class FilesystemGraphsDAOTest(unittest.TestCase):
     
     def setUp(self):
         Config = ConfigParser.ConfigParser()
-        Config.read("src/config/tests.ini")
+        Config.read("config/tests.ini")
         section = "FilesystemGraphsDAOTest"
         
         model_basedir = Config.get( section, "model_basedir" )

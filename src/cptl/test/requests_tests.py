@@ -35,11 +35,13 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
 SOFTWARE.
 """
 import unittest
-from cptl.requests import GraphsHandler
+from cptl.requests import GraphsRequestHandler
 
-class GraphsHandlerTest(unittest.TestCase):
+class GraphsRequestHandlerTest(unittest.TestCase):
 
     def test_something(self):
         self.assertEquals( 2, 2 )
-
-    
+        
+if __name__ == '__main__':
+    suite1 = unittest.TestLoader().loadTestsFromTestCase(GraphsRequestHandlerTest)
+    unittest.TextTestRunner(verbosity=2).run(suite1)
