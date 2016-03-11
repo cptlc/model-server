@@ -7,7 +7,7 @@
 	    { "join_field1": { "rdfs:label": "Merge field name of first graph" } },	    
 	    { "graph_ref2": { "rdfs:label": "ID of second graph", "rdfs:type":"xsd:string" } },
 	    { "join_field2": { "rdfs:label": "Merge field name of second graph" } },
-	    { "id_field": { "rdfs:label": "Field to use as ID for both graphs" } },	    
+	    { "id_field": { "rdfs:label": "Field to use as ID for both graphs" } }
 	]
     }
 }
