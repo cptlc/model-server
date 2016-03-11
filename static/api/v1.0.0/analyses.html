@@ -1,6 +1,6 @@
 <html xmlns:concordion="http://www.concordion.org/2007/concordion">
   <head>
-    <title>CPTL Model Server REST API - graphs</title>
+    <title>CPTL Model Server REST API - analyses</title>
     <link rel="stylesheet" href="/css/jsdoc.css">
   </head>
   <body>
@@ -18,16 +18,16 @@
     </div>
 
     <div id="content">      
-      <h1 class="classTitle">Resource  /api/v1.0.0/graphs</h1>
+      <h1 class="classTitle">Resource  /api/v1.0.0/analyses</h1>
       <br/>
 
       <table class="summaryTable">
 	<tr>
-	  <th colspan="2">Show Graph - Retrieve graphs</th>
+	  <th colspan="2">Show Analyses - Retrieve analyses</th>
 	</tr>
 	<tr>
 	  <td>URL</td>
-	  <td><b><code>/api/v1.0.0/graphs</code> or <code>/api/v1.0.0/graphs/:id</code></b>
+	  <td><b><code>/api/v1.0.0/analyses</code> or <code>/api/v1.0.0/analyses/:analysis_id</code></b>
 	</tr>
 	<tr>
 	  <td>Method</td>
@@ -70,29 +70,29 @@
 	  <td>Sample Call 1</td>
 	  <td><pre>
 	      $.ajax({
-	      url: "/api/v1.0.0/graphs",
+	      url: "/api/v1.0.0/analyses",
 	      dataType: "json",
 	      type : "GET",
     	      success : function(r) {
               console.log(r);
 	      }
 	      });
-	  </pre> <a href="/api/v1.0.0/graphs">Call</a></td>
-	</tr>
-	<tr>
-	  <td>Sample Call 2</td>
-	  <td><pre>
-	      $.ajax({
-	      url: "/api/v1.0.0/graphs/514d63aa-1fcf-423b-880d-168bac34354f",
-	      dataType: "json",
-	      type : "GET",
-    	      success : function(r) {
-              console.log(r);
-	      }
-	      });
-	  </pre> <a href="/api/v1.0.0/graphs/514d63aa-1fcf-423b-880d-168bac34354f">Call</a></td>
+	  </pre> <a href="/api/v1.0.0/analyses">Call</a></td>
 	</tr>
       </table>
+
+      <h2>Available Analyses</h2>
+      <table class="summaryTable">
+	<tr>
+	  <th>Method</td>
+          <th>Description</th>
+	</tr>
+	<tr>
+	  <td><a href="/api/v1.0.0/docs/analyses/graph_join.html">/api/v1.0.0/analyses/graph_join</a></td>
+	  <td>Graph Join Analysis</td>
+	</tr>
+      </table>
+      
     </div> <!-- content-->
   </body> 
 </html>

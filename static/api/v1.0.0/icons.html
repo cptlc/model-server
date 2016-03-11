@@ -1,6 +1,6 @@
 <html xmlns:concordion="http://www.concordion.org/2007/concordion">
   <head>
-    <title>CPTL Model Server REST API - graphs</title>
+    <title>CPTL Model Server REST API - icons</title>
     <link rel="stylesheet" href="/css/jsdoc.css">
   </head>
   <body>
@@ -11,23 +11,22 @@
     <div id="index">
       <ul class="classList">
 	<li><a href="/api/v1.0.0/docs/index.html">/api/v1.0.0/</a></li>
-	<li><a href="/api/v1.0.0/docs/analyses.html">/api/v1.0.0/analyses</a></li>	
 	<li><a href="/api/v1.0.0/docs/graphs.html">/api/v1.0.0/graphs</a></li>
-	<li><a href="/api/v1.0.0/docs/icons.html">/api/v1.0.0/icons</a></li>		
+	<li><a href="/api/v1.0.0/docs/icons.html">/api/v1.0.0/icons</a></li>	
       </ul>
     </div>
 
     <div id="content">      
-      <h1 class="classTitle">Resource  /api/v1.0.0/graphs</h1>
+      <h1 class="classTitle">Resource  /api/v1.0.0/icons</h1>
       <br/>
 
       <table class="summaryTable">
 	<tr>
-	  <th colspan="2">Show Graph - Retrieve graphs</th>
+	  <th colspan="2">Show Icon - Retrieve icons</th>
 	</tr>
 	<tr>
 	  <td>URL</td>
-	  <td><b><code>/api/v1.0.0/graphs</code> or <code>/api/v1.0.0/graphs/:id</code></b>
+	  <td><b><code>/api/v1.0.0/icons</code> or <code>/api/v1.0.0/icons/:id</code></b>
 	</tr>
 	<tr>
 	  <td>Method</td>
@@ -36,8 +35,8 @@
 	<tr>
 	  <td>URL Params</td>
 	  <td><p><b>Optional:</b><br/>
-	      <code>id=[UUID]</code><br/>
-	      example: id=514d63aa-1fcf-423b-880d-168bac34354f</p></td>
+	      <code>id=[type]</code><br/>
+	      example: id=syard:Transformer</p></td>
 	</tr>
 	<tr>
 	  <td>Data Params</td>
@@ -48,8 +47,8 @@
 	  <td>
 	    <ul>
 	      <li><b>Code:</b> 200 <br/>
-		<b>Content:</b> <code> { 'nodes': [...], 'links':[...] }</code><br/>
-	        <p>The content returned on success should validate against the schema provided.</p>
+		<b>Content:</b> <br/>
+	        <p>The content returned on success is a PNG icon for the <code>id</code> provided.  If no <code>id</code> is provided, then return a list of available icons.</p>
 	      </li>
 	    </ul>
 	  </td>
@@ -62,7 +61,7 @@
 	        <b>Content:</b> <code> { error : "You are unauthorized to make this request" }</code><br/></li>
 	      OR<br/>
 	      <li><b>Code:</b> 404 NOT FOUND<br/>
-	        <b>Content:</b> <code> { error : "No graph for UUID found" }</code><br/></li>
+	        <b>Content:</b> <code> { error : "No icon for UUID found" }</code><br/></li>
 	    </ul>
 	  </td>
 	</tr>
@@ -70,27 +69,27 @@
 	  <td>Sample Call 1</td>
 	  <td><pre>
 	      $.ajax({
-	      url: "/api/v1.0.0/graphs",
+	      url: "/api/v1.0.0/icons",
 	      dataType: "json",
 	      type : "GET",
     	      success : function(r) {
               console.log(r);
 	      }
 	      });
-	  </pre> <a href="/api/v1.0.0/graphs">Call</a></td>
+	  </pre> <a href="/api/v1.0.0/icons">Call</a></td>
 	</tr>
 	<tr>
 	  <td>Sample Call 2</td>
 	  <td><pre>
 	      $.ajax({
-	      url: "/api/v1.0.0/graphs/514d63aa-1fcf-423b-880d-168bac34354f",
+	      url: "/api/v1.0.0/icons/syard:Transformer",
 	      dataType: "json",
 	      type : "GET",
     	      success : function(r) {
               console.log(r);
 	      }
 	      });
-	  </pre> <a href="/api/v1.0.0/graphs/514d63aa-1fcf-423b-880d-168bac34354f">Call</a></td>
+	  </pre> <a href="/api/v1.0.0/icons/syard:Transformer">Call</a></td>
 	</tr>
       </table>
     </div> <!-- content-->

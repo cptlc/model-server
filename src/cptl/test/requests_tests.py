@@ -37,11 +37,25 @@ SOFTWARE.
 import unittest
 from cptl.requests import GraphsRequestHandler
 
+class AnalysesRequestHandlerTest(unittest.TestCase):
+
+    def test_something(self):
+        self.assertEquals( 2, 2 )
+
 class GraphsRequestHandlerTest(unittest.TestCase):
+
+    def test_something(self):
+        self.assertEquals( 2, 2 )
+
+class ImagesRequestHandlerTest(unittest.TestCase):
 
     def test_something(self):
         self.assertEquals( 2, 2 )
         
 if __name__ == '__main__':
+    suite0 = unittest.TestLoader().loadTestsFromTestCase(AnalysesRequestHandlerTest)    
     suite1 = unittest.TestLoader().loadTestsFromTestCase(GraphsRequestHandlerTest)
+    suite2 = unittest.TestLoader().loadTestsFromTestCase(ImagesRequestHandlerTest)    
+    unittest.TextTestRunner(verbosity=2).run(suite0)
     unittest.TextTestRunner(verbosity=2).run(suite1)
+    unittest.TextTestRunner(verbosity=2).run(suite2)    

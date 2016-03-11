@@ -51,9 +51,13 @@ def make_app():
     }
     handlers = [
         (r'/', MainHandler),
+        (r'/api/v1.0.0/analyses$', cptl.requests.AnalysesRequestHandler, dict(config_file="config/server.ini")),
+        (r'/api/v1.0.0/analyses/graph_join', cptl.requests.GraphJoinAnalysisRequestHandler, dict(config_file="config/server.ini")),
         (r'/api/v1.0.0/docs/(.*)', tornado.web.StaticFileHandler, {'path': 'static/api/v1.0.0/'}),
         (r'/api/v1.0.0/graphs$', cptl.requests.GraphsRequestHandler, dict(config_file="config/server.ini")),
         (r'/api/v1.0.0/graphs/(.*)', cptl.requests.GraphsRequestHandler, dict(config_file="config/server.ini")),
+        (r'/api/v1.0.0/icons$', cptl.requests.IconsRequestHandler, dict(config_file="config/server.ini")),
+        (r'/api/v1.0.0/icons/(.*)', cptl.requests.IconsRequestHandler, dict(config_file="config/server.ini")),
         (r'/css/(.*)', tornado.web.StaticFileHandler, {'path': 'static/css/'}),
         (r'/img/(.*)', tornado.web.StaticFileHandler, {'path': 'static/img/'}),        
         (r'/js/(.*)', tornado.web.StaticFileHandler, {'path': 'static/js/'}),        

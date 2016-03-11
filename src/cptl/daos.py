@@ -36,6 +36,57 @@ SOFTWARE.
 """
 import json
 import logging
+import urllib
+import urllib2
+
+class FilesystemAnalysesDAO():
+    """
+    The FilesystemAnalysesDAO is responsible for CRUD operations on a 
+      registry of analyses.
+    """
+    model_basedir = None            
+    resolver = None              
+    
+    def create(self):
+        """
+        Create a new analysis
+
+        :return:  returns the new analysis's UUID
+        """
+        raise Exception("method not yet implemented.")
+
+    def retrieve(self, ref_str):
+        """
+        Retrieve the analysis for the given UUID.
+
+        :param ref_str:  The reference string of the analysis to retrieve
+        :return:  returns the analysis interface
+        """
+        raise Exception("method not yet implemented.")
+
+    def update(self, ref):
+        raise Exception("method not yet implemented.")
+
+    def delete(self, ref):
+        raise Exception("method not yet implemented.")
+
+    @staticmethod
+    def create_dao( model_basedir, resolver_file_name ):
+        """
+        Create a data access object for analyses
+
+        :param model_basedir:            Base directory for the analyses
+        :param resolver_file_name:       Name of the resolver file to use
+        """
+        fad = FilesystemAnalysesDAO()
+        fad.model_basedir = model_basedir
+
+        resolver_file_path = "/".join([model_basedir, "resolvers", resolver_file_name])
+        resolver_file = open( resolver_file_path, 'r' )
+        fad.resolver = json.load( resolver_file )
+        
+        return fad
+    
 
 class FilesystemGraphsDAO():
     """
@@ -64,12 +115,16 @@ class FilesystemGraphsDAO():
         result = {}
         
         if ( ref_str in self.resolver ):
-            graph_file_path = "/".join( [ self.model_basedir, self.resolver[ ref_str ]["graph"] ] )
-            graph_file = open( graph_file_path, 'r' )
-            graph_data = json.load( graph_file )
-            result = graph_data
+            if ("graph" in self.resolver[ref_str]):
+                graph_file_path = "/".join( [ self.model_basedir, self.resolver[ ref_str ]["graph"] ] )
+                graph_file = open( graph_file_path, 'r' )
+                graph_data = json.load( graph_file )
+                result = graph_data
+                graph_file.close()
+            else:
+                result = {}
         else:
-            logging.warning("No entry for " + ref + " in resolver")
+            logging.warning("No entry for " + ref_str + " in resolver")
         
         return result
 
@@ -95,4 +150,115 @@ class FilesystemGraphsDAO():
         fgd.resolver = json.load( resolver_file )
         
         return fgd
+
+class FilesystemImagesDAO():
+    """
+    The FilesystemImagesDAO is responsible for CRUD operations on a 
+       icons available via the local filesystem.
+    """
+
+    model_basedir = None            
+    resolver = None              
+    
+    def create(self):
+        """
+        Create a new graph
+
+        :return:  returns the new graph's UUID
+        """
+        raise Exception("method not yet implemented.")
+
+    def retrieve(self, ref_str):
+        """
+        Retrieve the icon for the given UUID.
+
+        :param ref_str:  The reference string of the graph to retrieve
+        :return:  returns the image data, empty dict if none
+        """
+        result = {}
+        
+        if ( ref_str in self.resolver ):
+            image_file_path = "/".join( [ self.model_basedir, self.resolver[ ref_str ]["icon"] ] )
+            image_file = open( image_file_path, 'rb' )
+            result = image_file.read()
+            image_file.close()
+        else:
+            logging.warning("No entry for " + ref + " in resolver")
+        
+        return result
+
+    def update(self, ref):
+        raise Exception("method not yet implemented.")
+
+    def delete(self, ref):
+        raise Exception("method not yet implemented.")
+
+    @staticmethod
+    def create_dao( model_basedir, resolver_file_name ):
+        """
+        Create a data access object for images
+
+        :param model_basedir:            Base directory for the model to operate upon
+        :param resolver_file_name:       Name of the resolver file to use within that model
+        """
+        fid = FilesystemImagesDAO()
+        fid.model_basedir = model_basedir
+
+        resolver_file_path = "/".join([model_basedir, "resolvers", resolver_file_name])
+        resolver_file = open( resolver_file_path, 'r' )
+        fid.resolver = json.load( resolver_file )
+        
+        return fid
+    
+
+class CPTLServerGraphsDAO():
+    """
+    The URLGraphsDAO is responsible for retrieving CPTL Graphs from another
+      CPTL Server
+    """
+    base_url = None
+    resolver = None
+    
+    def retrieve(self, ref_str):
+        """
+        Retrieve the graph for the given UUID
+        :param uuid_str:  The reference string of the graph to retrieve
+        :return:  returns the graph data, empty dict if none
+        """
+
+        result = {}
+        
+        if ( ref_str in self.resolver ):
+            if ("cptla:graph_join" in self.resolver[ref_str]):
+                graph_url = self.base_url + "/api/v1.0.0/analyses/graph_join"
+                params_str = self.resolver[ref_str]["cptla:graph_join"]
+                full_url = graph_url + "?" + params_str
+                
+                req = urllib2.Request(full_url)
+                response = urllib2.urlopen(req)
+                graph_data_str = response.read()
+                graph_data = json.loads(graph_data_str)
+                result = graph_data
+        else:
+            logging.warning("No entry for " + ref_str + " in resolver")
+
+        return result
+
+    def update(self, ref):
+        raise Exception("method not yet implemented.")
+
+    def delete(self, ref):
+        raise Exception("method not yet implemented.")
+
+    @staticmethod
+    def create_dao( base_url, resolver_name=None ):
+        """
+        Create a data access object for graphs
+
+        :param base_url:            Base directory for the model to operate upon
+        :param resolver_name:       Name of the resolver file to use within that model
+        """
+        csgd = CPTLServerGraphsDAO()
+        csgd.base_url = base_url
+        return csgd
     

@@ -38,6 +38,20 @@ import cptl.daos
 import ConfigParser
 import unittest
 
+class FilesystemAnalysesDAOTest(unittest.TestCase):
+
+    fad = None
+    
+    def setUp(self):
+        Config = ConfigParser.ConfigParser()
+        Config.read("config/tests.ini")
+        section = "FilesystemAnalysesDAOTest"
+        
+        model_basedir = Config.get( section, "model_basedir" )
+        resolver_file_name = Config.get( section, "resolver_file_name" )
+
+        self.fad = cptl.daos.FilesystemAnalysesDAO.create_dao(model_basedir, resolver_file_name)
+        
 
 class FilesystemGraphsDAOTest(unittest.TestCase):
 
@@ -58,8 +72,51 @@ class FilesystemGraphsDAOTest(unittest.TestCase):
         graph_data = self.fgd.retrieve(ref_str)
         self.assertEquals( len(graph_data["nodes"]), 188 )
 
+class FilesystemImagesDAOTest(unittest.TestCase):
+
+    fid = None
+
+    def setUp(self):
+        Config = ConfigParser.ConfigParser()
+        Config.read("config/tests.ini")
+        section = "FilesystemImagesDAOTest"
+        
+        model_basedir = Config.get( section, "model_basedir" )
+        resolver_file_name = Config.get( section, "resolver_file_name" )
+
+        self.fid = cptl.daos.FilesystemImagesDAO.create_dao(model_basedir, resolver_file_name)
+        
+    def test_retrieve(self):
+        ref_str = "syard:Bus"
+        image_data = self.fid.retrieve(ref_str)
+        self.assertTrue( image_data != None )
+
+class CPTLServerGraphsDAOTest(unittest.TestCase):
+
+    csgd = None
+    
+    def setUp(self):
+        Config = ConfigParser.ConfigParser()
+        Config.read("config/tests.ini")
+        section = "CPTLServerGraphsDAOTest"
+        
+        base_url = Config.get( section, "base_url" )
+        resolver_name = None #Config.get( section, "resolver_name" )
+        self.csgd = cptl.daos.CPTLServerGraphsDAO.create_dao(base_url)
+        
+    def test_retrieve(self):
+        ref_str = "4adddaa9-d137-4a0b-ae20-9344e6a2336e"
+        graph_data = self.csgd.retrieve(ref_str)
+        self.assertEquals( len(graph_data["nodes"]), 23 )
+        
         
 if __name__ == '__main__':
+    suite0 = unittest.TestLoader().loadTestsFromTestCase(FilesystemAnalysesDAOTest)    
     suite1 = unittest.TestLoader().loadTestsFromTestCase(FilesystemGraphsDAOTest)
+    suite2 = unittest.TestLoader().loadTestsFromTestCase(FilesystemImagesDAOTest)
+    suite3 = unittest.TestLoader().loadTestsFromTestCase(CPTLServerGraphsDAOTest)    
+    unittest.TextTestRunner(verbosity=2).run(suite0)
     unittest.TextTestRunner(verbosity=2).run(suite1)
+    unittest.TextTestRunner(verbosity=2).run(suite2)
+    unittest.TextTestRunner(verbosity=2).run(suite3)        
 
