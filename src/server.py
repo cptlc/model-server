@@ -34,17 +34,34 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
 SOFTWARE.
 """
+import ConfigParser
 import cptl.requests
 import json
+import logging
 import os
 import tornado.httpserver
 import tornado.ioloop
+import tornado.log
 import tornado.web
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("../index.html")
 
+def initialize_logging(config_file):
+    Config = ConfigParser.ConfigParser()
+    Config.read(config_file)
+
+    section = "ServerLogging"
+    access_log_filepath = Config.get( section, "access_log_filepath" )
+    tornado.log.enable_pretty_logging()
+    access_log = logging.getLogger("tornado.access")
+    formatter = tornado.log.LogFormatter()
+    handler = logging.FileHandler(access_log_filepath)
+    handler.setFormatter(formatter)
+    access_log.addHandler(handler)
+    
+        
 def make_app():
     settings = {
         "debug": "True",
@@ -68,7 +85,8 @@ if __name__ == "__main__":
     app = make_app()
     ssl_options = { "certfile": "keys/localhost.csr",
                     "keyfile": "keys/localhost.key" }
-    
+
+    initialize_logging(config_file="config/server.ini")
     http_server = tornado.httpserver.HTTPServer( app, ssl_options )
     http_server.listen(443)
     tornado.ioloop.IOLoop.instance().start()
